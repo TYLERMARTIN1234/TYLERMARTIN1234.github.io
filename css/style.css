@@ -1,84 +1,27 @@
-body {
-  height: 100%;
-}
+body {}
 
-.thumbsBox {
-  width: 50%;
-  height: 50%;
-  border: 10px solid black;
-  text-align: center;
-  line-height: 400px;
-  font-size: 50px;
-}
-
-.pTop {
-  position: absolute;
-  top: 0px;
-}
-
-.pBot {
-  position: absolute;
-  Bottom: 0px;
-}
-
-.pLeft {
-  position: absolute;
-  Left: 0px;
-}
-
-.pRight {
-  position: absolute;
-  Right: 0px;
-}
-
-#tUp {
-  background-color: #00ff00;
-}
-
-#tWiggle {
-  background-color: #0000ff;
-}
-
-#tDown {
-  background-color: #ff0000;
-}
-
-#tOops {
-  background-color: #ffff00;
-}
-
-#tUp:hover {
-  background-color: #90EE90;
-}
-
-#tWiggle:hover {
-  background-color: #ADD8E6;
-}
-
-#tDown:hover {
-  background-color: #FFCCCB;
-}
-
-#tOops:hover {
-  background-color: #ffffa7;
-}
-
-div {
-  background-color: white;
-  border: 1px solid black;
+.blogBox {
+  border: 5px solid black;
+  margin: 10px;
 }
 
 #content {
-  border: 1px solid black;
+  margin: auto;
+  width: 55%;
+  border: 5px solid black;
 }
 
-#first {
-  color: purple;
-  background-color: blue;
-  margin: 20px;
+#headerBox {
+  border: 5px solid black;
+  margin: 10px;
 }
 
-.second {
-  border: 1px solid black;
-  margin: 20px;
+#menuBox {
+  border: 5px solid black;
+  margin: 10px;
+}
+
+.linkBox {
+  border: 5px solid black;
+  Margin: 10px;
 }
