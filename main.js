@@ -1,89 +1,88 @@
-import * as THREE from './three.module.js';
+import * as THREE from './three.module.ja'
 
-const scene = new THREE.Scene()
+//starting position of the images from the top
+const STARTY = 20;
 
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+//create a new scene
+const scene = new THREE.Scene();
 
-const renderer = new THREE.WebGLRenderer(
-  { canvas: document.querySelector('#bg') }
-);
+//create and position the camera
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 30;
 
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
-camera.position.z = 100;
-camera.position.y = 20;
+// creating a list of images in the 'img' folder
+let imgList = [
+    'code.png',
+    'dirt.png'
+]
 
-//LIGHTS
-const pointLight = new THREE.PointLight(0xFFFFFF, 1000, 1000)
-pointLight.position.set(0, 0, 50)
+//adds every image as a plane mesh with texture to the scene
+for (const image in imgList) {
+    //every mesh has a geometry, texture, and material
+    const geometry = new THREE.PlaneGeometry(30, 20);
+    const texture = new THREE.TextureLoader().load('img/' + imgList[image]);
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0xffffff, 
+        side: THREE.DoubleSide,
+        map: texture //adds the texture image here 
+    });
+    const plane = new THREE.Mesh(geometry, material);
+    // adds the new plane to your scene
+    scene.add(plane);
 
-const ambientLight = new THREE.PointLight(0xFFFFFF, 0.5)
+}
 
-scene.add(pointLight)
-scene.add(ambientLight)
-
-const back = new THREE.TextureLoader().load('nothing.png')
-scene.background = back
-
-//HELPERS
-const lightHelper = new THREE.PointLightHelper(pointLight);
-const axesHelper = new THREE.AxesHelper(20, 20, 20);
-scene.add(lightHelper, axesHelper );
-
-const geoPog = new THREE.CylinderGeometry(41.37, 41.37, 6, 64);
-const texturePog = new THREE.TextureLoader().load('JOE.png')
-const matPog = new THREE.MeshStandardMaterial(
-  {
-    color: 0xFFFFFF,
-    wireframe: false,
-    map: texturePog
-  }
-)
-const pog = new THREE.Mesh( geoPog, matPog );
-
-const geoDirt = new THREE.BoxGeometry(50,50, 50, 50)
-const textureDirt = new THREE.TextureLoader().load('dirt.png')
-const matDirt = new THREE.MeshStandardMaterial(
-  {
-    color: 0xFFFFFF,
-    wireframe: false,
-    map: textureDirt
-  }
-)
-const dirt = new THREE.Mesh( geoDirt, matDirt )
-
-scene.add(pog)
-scene.add(dirt)
-
-dirt.position.x = 100;
-dirt.position.z = 100
-
+// moves the camera with your scrollbar
 function moveCamera() {
-  const pos = document.body.getBoundingClientRect().top;
-  dirt.rotation.x += 0.05;
-  dirt.rotation.y += 0.075;
-  dirt.rotation.z += 0.05;
-
-  camera.position.z = pos * -0.1;
-  camera.position.x = pos * -0.002;
-  camera.position.y = pos * -0.002;
+    const top = document.body.getBoundingClientRect().top;
+    camera.position.y = -10 + top * 0.10
 }
 
+// adds scrollbar event to move the camera
+document.body.onscroll = moveCamera;
 
-document.body.onscroll = moveCamera
-moveCamera()
-
-function animate(time) {
-  requestAnimationFrame( animate );
-
-pog.rotation.x += 0.005
-
-  renderer.render( scene, camera );
+// resize the threejs canvas with the window
+//AND adjust for phone sizes
+function resizeWindow() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // adjust for phone or desktop size
+    if (window.innerWidth <= 600)  {  
+        camera.position.x = 0;
+        for (const child  in scene.children) {
+            scene.children[child].rotation.y = 0;
+            scene.children[child].position.y = child * -50;
+        } 
+    } else {
+        camera.position.x = 15;
+        for (const child  in scene.children) {
+            scene.children[child].rotation.y = 15 * (Math.PI / 180);
+            scene.children[child].position.y = child * -30;
+        } 
+    }
 }
 
+// resize canvas on window resize
+window.addEventListener('resize', resizeWindow, false)
+
+// creates the renderer and attaches to the canvas
+const renderer = new THREE.WebGLRenderer(
+    { canvas: document.querySelector('#bg') }
+    );
+
+// sets initial canvas size
+resizeWindow();
+
+// set renderer size and add it to the page
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// animation loop that calls itself recursively
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+// starts the animation
 animate()
