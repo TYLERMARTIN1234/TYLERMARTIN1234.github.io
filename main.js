@@ -1,4 +1,4 @@
-import * as THREE from './three.module.ja'
+import * as THREE from './three.module.js'
 
 //starting position of the images from the top
 const STARTY = 20;
