@@ -12,8 +12,7 @@ camera.position.z = 30;
 
 // creating a list of images in the 'img' folder
 let imgList = [
-    'code.png',
-    'dirt.png'
+    'Capture.PNG',
 ]
 
 //adds every image as a plane mesh with texture to the scene
